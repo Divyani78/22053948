@@ -1,16 +1,25 @@
-const express = require("express");
-const app = express();
+const axios = require('axios');
 
-const PORT = process.env.PORT || 5050; // Use environment variable or default to 5050
+const BASE_URL = 'http://20.244.56.144/evaluation-service/users/:userid/posts'; // Replace with actual URL
 
-app.use(express.json());
+async function fetchUsers() {
+  try {
+    const response = await axios.get(`${BASE_URL}/users`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return null;
+  }
+}
 
-// Test Route
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
-});
+async function fetchPosts() {
+  try {
+    const response = await axios.get(`${BASE_URL}/posts`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return null;
+  }
+}
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = { fetchUsers, fetchPosts };
